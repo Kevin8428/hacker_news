@@ -2,11 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
-	"time"
+
+	"github.com/kevin8428/hackernews/api"
 
 	"text/template"
 )
@@ -22,49 +21,22 @@ type Person struct {
 	Emails []string
 }
 
-type Todo struct {
-	Name      string    `json:"name"`
-	Completed bool      `json:"Completed"`
-	Due       time.Time `json:"Due"`
-}
-type Todos []Todo
-
 type articles struct{}
 
 func (h articles) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	a := Todo{
-		Name:      "kevin",
-		Completed: false,
+	a := api.Article{
+		Name:   "some_name",
+		Author: "kevin",
 	}
 
 	json.NewEncoder(w).Encode(a)
 }
 
-func getArticles() Todo {
-	a := Todo{}
-	res, err := http.Get("http://localhost:5050/articles")
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		panic(err.Error())
-	}
-	err = json.Unmarshal(body, &a)
-	if err != nil {
-		fmt.Println("unmarshall error: ", err)
-	}
-	return a
-}
-
 func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-
 	t, err := template.ParseFiles("homepage.html")
-	person := Person{
-		Name:   "kevin",
-		Emails: []string{"kevin@mail.com", "deutscher@mail.com"},
-	}
-	articles := getArticles()
-	fmt.Println("articles: ", articles)
+	articles := api.GetArticles()
 
-	err = t.Execute(w, person)
+	err = t.Execute(w, articles)
 	if err != nil {
 		log.Fatal("Execute: ", err)
 		return
