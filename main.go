@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	"text/template"
 )
@@ -14,30 +15,36 @@ func renderPage(w http.ResponseWriter, r *http.Request) {
 
 type handler struct{}
 
-func count() {
-	for i := 0; i < 10; i++ {
-		fmt.Println(i)
-	}
-}
-
 type Person struct {
 	Name   string
 	Emails []string
 }
 
-func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	tmpl := `{{$name := .Name}}
-	{{range .Emails}}
-			Name is {{$name}}, email is {{.}}
-	{{end}}
-	`
-	person := Person{
-		Name:   "Satish",
-		Emails: []string{"satish@rubylearning.org", "satishtalim@gmail.com"},
+type Todo struct {
+	Name      string
+	Completed bool
+	Due       time.Time
+}
+type Todos []Todo
+
+type articles struct{}
+
+func (h articles) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	todos := Todos{
+		Todo{Name: "Write presentation"},
+		Todo{Name: "Host meetup"},
 	}
-	t := template.New("Person template")
-	t, _ = t.Parse(tmpl)
-	err := t.Execute(w, person)
+
+	json.NewEncoder(w).Encode(todos)
+}
+
+func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("homepage.html")
+	person := Person{
+		Name:   "kevin",
+		Emails: []string{"kevin@mail.com", "deutscher@mail.com"},
+	}
+	err = t.Execute(w, person)
 	if err != nil {
 		log.Fatal("Execute: ", err)
 		return
@@ -60,6 +67,7 @@ func main() {
 
 	////////////////implement with handler////////////////
 	server := http.NewServeMux()
+	server.Handle("/articles", articles{})
 	server.Handle("/", handler{})
 	err := http.ListenAndServe(":5050", server)
 	if err != nil {
