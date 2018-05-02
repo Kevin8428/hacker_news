@@ -15,8 +15,8 @@ type Article struct {
 }
 
 // GetArticles is a function
-func GetArticles() Article {
-	a := Article{}
+func GetArticles() []Article {
+	a := []Article{}
 	res, err := http.Get("http://localhost:5050/articles")
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
