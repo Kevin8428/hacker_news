@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -21,7 +20,6 @@ type articles struct{}
 func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("homepage.html")
 	articles := api.GetArticles()
-	fmt.Println("articles: ", articles)
 
 	err = t.Execute(w, articles)
 	if err != nil {
