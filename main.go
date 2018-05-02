@@ -1,13 +1,13 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
+	"text/template"
 
 	"github.com/kevin8428/hackernews/api"
-
-	"text/template"
+	"github.com/kevin8428/hackernews/users"
+	_ "github.com/lib/pq"
 )
 
 func renderPage(w http.ResponseWriter, r *http.Request) {
@@ -15,7 +15,6 @@ func renderPage(w http.ResponseWriter, r *http.Request) {
 }
 
 type handler struct{}
-type articles struct{}
 
 func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("homepage.html")
@@ -28,33 +27,13 @@ func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h articles) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	a := []api.Article{
-		{
-			Name:   "article 1",
-			Author: "kevin",
-		},
-		{
-			Name:   "article 2",
-			Author: "matt",
-		},
-		{
-			Name:   "article 3",
-			Author: "dave",
-		},
-		{
-			Name:   "article 4",
-			Author: "ben",
-		},
-	}
-
-	json.NewEncoder(w).Encode(a)
-}
-
 func main() {
+
 	////////////////implement with handler////////////////
 	server := http.NewServeMux()
-	server.Handle("/articles", articles{})
+	server.Handle("/articles", api.Articles{})
+	server.Handle("/user", users.User{})
+	server.Handle("/add-article", users.AddArticle{})
 	server.Handle("/", handler{})
 	err := http.ListenAndServe(":5050", server)
 	if err != nil {
@@ -77,9 +56,3 @@ func main() {
 	// }
 
 }
-
-// func buildHandler(page *template.Template) http.Handler {
-// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-// 		page.Execute(w, r)
-// 	})
-// }

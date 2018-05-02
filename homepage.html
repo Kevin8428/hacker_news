@@ -1,11 +1,35 @@
 <html>
-  <head></head>
+  <head>
+    <style>
+    .row{
+      border-bottom: 2px solid black;
+      padding-bottom: 2rem;
+    }
+    </style>
+  </head>
   <body>
-    <h1>hello world</h1>
+    <h1>home page</h1>
     {{ range .}}
-      <div>{{ .Name }}</div>
-      <div>{{ .Author }}</div>
-      <div>{{ .Website }}</div>
+    <div class="row">
+      <h3 class="name">{{ .Name }}</h3>
+      <h4 class="author">{{ .Author }}</h4>
+      <div class="website">{{ .Website }}</div>
+      <button id="1">add to user 1</button> <button id="2">add to user 2</button> <button id="3">add to user 3</button> <button id="4">add to user 4</button>      
+    </div>
     {{ end }}
+    <script>
+      var buttons = document.querySelectorAll('button');
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function(){
+          var name = encodeURIComponent(this.parentElement.getElementsByClassName('name')[0].innerHTML),
+          author = encodeURIComponent(this.parentElement.getElementsByClassName('author')[0].innerHTML),
+          website = encodeURIComponent(this.parentElement.getElementsByClassName('website')[0].innerHTML);
+          fetch('http://localhost:5050/add-article?user_id='+this.id+'&author='+author+'&name='+name+'&website='+website)
+          .then(function(response) {
+          console.log(response.json());
+          });
+        });
+      }
+    </script>
   </body>
 </html>
