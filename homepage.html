@@ -26,7 +26,7 @@
           website = encodeURIComponent(this.parentElement.getElementsByClassName('website')[0].innerHTML);
           fetch('http://localhost:5050/add-article?user_id='+this.id+'&author='+author+'&name='+name+'&website='+website)
           .then(function(response) {
-          console.log(response.json());
+          console.log(response.status);
           });
         });
       }
