@@ -6,6 +6,8 @@ import (
 	"text/template"
 
 	"github.com/kevin8428/hackernews/api"
+	"github.com/kevin8428/hackernews/articles"
+	"github.com/kevin8428/hackernews/repos"
 	"github.com/kevin8428/hackernews/users"
 	_ "github.com/lib/pq"
 )
@@ -28,9 +30,13 @@ func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-
+	database := repos.Initialize()
+	// defer database.Articles.Close()
+	as := articles.NewService(database.Articles)
 	////////////////implement with handler////////////////
 	server := http.NewServeMux()
+	articles.InitializeHandler(server, as)
+
 	server.Handle("/articles", api.Articles{})
 	server.Handle("/user", users.User{})
 	server.Handle("/add-article", users.AddArticle{})
