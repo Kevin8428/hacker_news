@@ -3,17 +3,41 @@ package articles
 import (
 	"log"
 	"net/http"
+	"os"
+	"strings"
 
-	"github.com/alecthomas/template"
+	"text/template"
 )
 
-type ArticlesNewHandler struct{}
+type controller struct {
+	Service
+}
 
-func (a ArticlesNewHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("homepage.html")
-	err = t.Execute(w, nil)
-	if err != nil {
-		log.Fatal("Execute error: ", err)
-		return
+func makeController(as Service) controller {
+	return controller{
+		Service: as,
 	}
+}
+
+func (c *controller) ShowArticles() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// these get you to the same place:
+		// c.GetArticleInfo()
+		// c.Service.GetArticleInfo()
+		category := strings.TrimPrefix(r.URL.Path, "/category/")
+		wd, err := os.Getwd()
+		if err != nil {
+			log.Fatal(err)
+		}
+		t, err := template.ParseFiles(wd + "/category.html")
+		if err != nil {
+			log.Fatal("error: ", err)
+			return
+		}
+		err = t.Execute(w, category)
+		if err != nil {
+			log.Fatal("error: ", err)
+			return
+		}
+	})
 }

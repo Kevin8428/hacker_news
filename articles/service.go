@@ -21,5 +21,5 @@ func NewService(articleRepo repos.ArticlesRepositoryInterface) Service {
 
 func (s *service) GetArticleInfo(author string) string {
 	s.Articles.FindArticlesByUserID(1)
-	return author
+	return "author name"
 }
