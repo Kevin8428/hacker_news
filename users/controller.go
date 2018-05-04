@@ -7,8 +7,6 @@ import (
 	"os"
 	"strconv"
 	"text/template"
-
-	"github.com/kevin8428/hackernews/domain"
 )
 
 type controller struct {
@@ -36,11 +34,9 @@ func (c *controller) ShowUser() http.Handler {
 		userID := r.Form["id"][0]
 		id, _ := strconv.Atoi(userID)
 		user := c.Service.FindUser(id)
-		articles := c.Service.FindUserArticlesByUserID(id)
-		u := domain.User{
-			LastName: user.LastName,
-		}
-
+		articles := c.Service.FindArticles(id)
+		u := user
+		u.Articles = articles
 		err = t.Execute(w, u)
 		if err != nil {
 			log.Fatal("error: ", err)

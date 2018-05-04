@@ -2,5 +2,13 @@
   <head></head>
   <body>
     <h1>user page for: {{ .LastName }}</h1>
+    <ul>
+    {{ range .Articles }}      
+      <li>{{ .Title }}</li>
+      <li>{{ .Author }}</li>
+      <li>{{ .Website }}</li>
+      <hr>
+    {{ end }}
+  </ul>
   </body>
 </html>

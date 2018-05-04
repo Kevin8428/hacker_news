@@ -41,7 +41,7 @@ func (u *UsersRepository) FindUserArticlesByUserID(id int) []domain.Article {
 		}
 		articles = append(articles, article)
 	}
-	return []domain.Article{}
+	return articles
 }
 
 // FindUsersByUserID method
