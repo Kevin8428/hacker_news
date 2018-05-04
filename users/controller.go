@@ -1,6 +1,7 @@
 package users
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -19,6 +20,7 @@ func makeController(us Service) controller {
 		Service: us,
 	}
 }
+
 func (c *controller) ShowUser() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		wd, err := os.Getwd()
@@ -33,7 +35,7 @@ func (c *controller) ShowUser() http.Handler {
 		r.ParseForm()
 		userID := r.Form["id"][0]
 		id, _ := strconv.Atoi(userID)
-		user := c.Service.FindUsersByUserID(id)
+		user := c.Service.FindUser(id)
 		u := domain.User{
 			LastName: user.LastName,
 		}
@@ -43,5 +45,24 @@ func (c *controller) ShowUser() http.Handler {
 			log.Fatal("error: ", err)
 			return
 		}
+	})
+}
+
+func (c *controller) CreateUser() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		saveUser := c.Service.SaveNewUser()
+		fmt.Println("saved user: ", saveUser)
+	})
+}
+
+func (c *controller) SaveUserArticle() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		name := r.Form["name"][0]
+		author := r.Form["author"][0]
+		website := r.Form["website"][0]
+		userID := r.Form["user_id"][0]
+		id, _ := strconv.Atoi(userID)
+		c.Service.SaveArticle(name, author, website, id)
 	})
 }

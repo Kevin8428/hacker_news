@@ -7,7 +7,7 @@ import (
 )
 
 type ArticlesRepository struct {
-	db *sql.DB
+	DB *sql.DB
 }
 
 func (a *ArticlesRepository) FindArticlesByUserID(int) []domain.Article {

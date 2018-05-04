@@ -7,5 +7,6 @@ import (
 // InitializeHandler comment
 func InitializeHandler(server *http.ServeMux, as Service) {
 	controller := makeController(as)
-	server.Handle("/category/", controller.ShowArticles())
+	server.Handle("/category/", controller.ShowArticlesCategory())
+	server.Handle("/", controller.ShowArticlesAll())
 }

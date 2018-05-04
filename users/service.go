@@ -5,12 +5,19 @@ import (
 	"github.com/kevin8428/hackernews/repos"
 )
 
+// methods of of service struct
 type Service interface {
-	FindUsersByUserID(int) domain.User
+	SaveArticle(string, string, string, int) error
+	FindUser(int) domain.User
+	SaveNewUser() ServiceResponse
 }
 
 type service struct {
 	Users repos.UsersRepositoryInterface
+}
+
+type ServiceResponse struct {
+	valid bool
 }
 
 // NewService comment
@@ -20,6 +27,19 @@ func NewService(userRepo repos.UsersRepositoryInterface) Service {
 	}
 }
 
-func (s *service) FindUsersByUserID(id int) domain.User {
+func (s *service) SaveNewUser() ServiceResponse {
+	// create user in DB
+	// return list of possible articles
+	return ServiceResponse{
+		valid: true,
+	}
+}
+
+func (s *service) FindUser(id int) domain.User {
 	return s.Users.FindUsersByUserID(id)
+}
+
+func (s *service) SaveArticle(name string, author string, website string, id int) error {
+	err := s.Users.SaveArticle(name, author, website, id)
+	return err
 }

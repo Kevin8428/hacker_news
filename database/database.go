@@ -52,28 +52,28 @@ func (h *DatabaseHandler) GetUserFirstArticle(userID int) string {
 }
 
 // GetUserInfo function
-func (h *DatabaseHandler) GetUserLastName(userID int) string {
+// func (h *DatabaseHandler) GetUserLastName(userID int) string {
 
-	rows, err := h.DB.Query("SELECT last_name FROM users WHERE id = $1", userID)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-	var lastName string
-	for rows.Next() {
-		if err := rows.Scan(&lastName); err != nil {
-			log.Fatal(err)
-		}
-	}
-	return lastName
-}
+// 	rows, err := h.DB.Query("SELECT last_name FROM users WHERE id = $1", userID)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	defer rows.Close()
+// 	var lastName string
+// 	for rows.Next() {
+// 		if err := rows.Scan(&lastName); err != nil {
+// 			log.Fatal(err)
+// 		}
+// 	}
+// 	return lastName
+// }
 
 // AddArticle does stuff
-func (h *DatabaseHandler) AddArticle(name string, author string, website string, id int) {
+// func (h *DatabaseHandler) AddArticle(name string, author string, website string, id int) {
 
-	_, err := h.DB.Query("INSERT INTO user_articles (name, author, website, user_id) VALUES ($1, $2, $3, $4)", name, author, website, id)
-	if err != nil {
-		fmt.Println("insert error: ", err)
-		panic(err)
-	}
-}
+// 	_, err := h.DB.Query("INSERT INTO user_articles (name, author, website, user_id) VALUES ($1, $2, $3, $4)", name, author, website, id)
+// 	if err != nil {
+// 		fmt.Println("insert error: ", err)
+// 		panic(err)
+// 	}
+// }

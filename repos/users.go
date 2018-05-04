@@ -10,13 +10,13 @@ import (
 
 // UsersRepository struct
 type UsersRepository struct {
-	db *sql.DB
+	DB *sql.DB
 }
 
 // FindUsersByUserID method
 func (u *UsersRepository) FindUsersByUserID(userID int) domain.User {
 	query := `SELECT last_name FROM users WHERE id = $1`
-	rows, error := u.db.Query(query, userID)
+	rows, error := u.DB.Query(query, userID)
 	if error != nil {
 		fmt.Println("error1: ", error)
 		panic(error)
@@ -33,4 +33,14 @@ func (u *UsersRepository) FindUsersByUserID(userID int) domain.User {
 	return domain.User{
 		LastName: lastName,
 	}
+}
+
+// SaveArticle comment
+func (u *UsersRepository) SaveArticle(name string, author string, website string, id int) error {
+	_, err := u.DB.Query("INSERT INTO user_articles (name, author, website, user_id) VALUES ($1, $2, $3, $4)", name, author, website, id)
+	if err != nil {
+		fmt.Println("insert error: ", err)
+		panic(err)
+	}
+	return err
 }
