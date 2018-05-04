@@ -59,7 +59,15 @@ func (c *controller) SaveUserArticle() http.Handler {
 		author := r.Form["author"][0]
 		website := r.Form["website"][0]
 		userID := r.Form["user_id"][0]
+		category := ""
+		url := ""
+		if len(r.Form["category"]) > 0 {
+			category = r.Form["category"][0]
+		}
+		if len(r.Form["url"]) > 0 {
+			url = r.Form["url"][0]
+		}
 		id, _ := strconv.Atoi(userID)
-		c.Service.SaveArticle(name, author, website, id)
+		c.Service.SaveArticleToUser(name, author, website, id, category, url)
 	})
 }

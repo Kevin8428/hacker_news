@@ -7,7 +7,7 @@ import (
 
 // methods of of service struct
 type Service interface {
-	SaveArticle(string, string, string, int) error
+	SaveArticleToUser(string, string, string, int, string, string) error
 	SaveNewUser() ServiceResponse
 	FindArticles(id int) []domain.Article
 	FindUser(id int) domain.User
@@ -44,7 +44,7 @@ func (s *service) FindUser(id int) domain.User {
 	return s.Users.FindUsersByUserID(id)
 }
 
-func (s *service) SaveArticle(name string, author string, website string, id int) error {
-	err := s.Users.SaveArticle(name, author, website, id)
+func (s *service) SaveArticleToUser(name string, author string, website string, id int, category string, url string) error {
+	err := s.Users.SaveArticle(name, author, website, id, category, url)
 	return err
 }

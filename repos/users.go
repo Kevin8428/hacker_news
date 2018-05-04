@@ -63,8 +63,8 @@ func (u *UsersRepository) FindUsersByUserID(userID int) domain.User {
 }
 
 // SaveArticle comment
-func (u *UsersRepository) SaveArticle(name string, author string, website string, id int) error {
-	_, err := u.DB.Query("INSERT INTO user_articles (name, author, website, user_id) VALUES ($1, $2, $3, $4)", name, author, website, id)
+func (u *UsersRepository) SaveArticle(name string, author string, website string, id int, category string, url string) error {
+	_, err := u.DB.Query("INSERT INTO user_articles (title, author, website, user_id, category, link) VALUES ($1, $2, $3, $4, $5, $6)", name, author, website, id, category, url)
 	if err != nil {
 		fmt.Println("insert error: ", err)
 		panic(err)
