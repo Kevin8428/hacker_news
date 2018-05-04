@@ -21,6 +21,5 @@ func NewService(userRepo repos.UsersRepositoryInterface) Service {
 }
 
 func (s *service) FindUsersByUserID(id int) domain.User {
-	s.Users.FindUsersByUserID(id)
-	return domain.User{}
+	return s.Users.FindUsersByUserID(id)
 }

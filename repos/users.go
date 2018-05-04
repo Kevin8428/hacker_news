@@ -15,17 +15,13 @@ type UsersRepository struct {
 
 // FindUsersByUserID method
 func (u *UsersRepository) FindUsersByUserID(userID int) domain.User {
-	fmt.Println("----id: ", userID)
 	query := `SELECT last_name FROM users WHERE id = $1`
-	// rows, err := u.db.Query("SELECT last_name FROM users WHERE id = $1", userID)
-	fmt.Println("-----0----")
-	rows, queryError := u.db.Query(query, userID)
-	fmt.Println("-----0.1----")
-	if queryError != nil {
-		fmt.Println("error1: ", queryError)
+	rows, error := u.db.Query(query, userID)
+	if error != nil {
+		fmt.Println("error1: ", error)
+		panic(error)
 		return domain.User{}
 	}
-	fmt.Println("-----1----")
 	defer rows.Close()
 	var lastName string
 	for rows.Next() {
@@ -33,6 +29,7 @@ func (u *UsersRepository) FindUsersByUserID(userID int) domain.User {
 			log.Fatal(err)
 		}
 	}
+	fmt.Println("lastName: ", lastName)
 	return domain.User{
 		LastName: lastName,
 	}

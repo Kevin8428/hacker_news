@@ -34,11 +34,11 @@ func (c *controller) ShowUser() http.Handler {
 		userID := r.Form["id"][0]
 		id, _ := strconv.Atoi(userID)
 		user := c.Service.FindUsersByUserID(id)
-		user = domain.User{
+		u := domain.User{
 			LastName: user.LastName,
 		}
 
-		err = t.Execute(w, user)
+		err = t.Execute(w, u)
 		if err != nil {
 			log.Fatal("error: ", err)
 			return

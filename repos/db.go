@@ -20,5 +20,6 @@ func Initialize() *Repositories {
 	}
 	return &Repositories{
 		Articles: &ArticlesRepository{db},
+		Users:    &UsersRepository{db},
 	}
 }
