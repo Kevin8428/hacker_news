@@ -19,14 +19,14 @@
     </form>
     <h1>home page</h1>
     {{ if .User.IsLoggedIn }}
-      <div>USER IS LOGGED IN</div>
+      <div>USER IS LOGGED IN AS USER {{ .User.ID }}</div>
     {{ end }}
     {{ range .Articles }}
     <div class="row">
       <h3 class="name">{{ .Title }}</h3>
       <h4 class="author">{{ .Author }}</h4>
       <div class="website">{{ .Website }}</div>
-      <button id="1">add to user 1</button> <button id="2">add to user 2</button> <button id="3">add to user 3</button> <button id="4">add to user 4</button>      
+      <button>add to my articles</button>
     </div>
     {{ end }}
     <script>
@@ -36,7 +36,7 @@
           var name = encodeURIComponent(this.parentElement.getElementsByClassName('name')[0].innerHTML),
           author = encodeURIComponent(this.parentElement.getElementsByClassName('author')[0].innerHTML),
           website = encodeURIComponent(this.parentElement.getElementsByClassName('website')[0].innerHTML);
-          fetch('http://localhost:5050/save-article?user_id='+this.id+'&author='+author+'&name='+name+'&website='+website)
+          fetch('http://localhost:5050/save-article?user_id='+{{ .User.ID }}+'&author='+author+'&name='+name+'&website='+website)
           .then(function(response) {
           console.log(response.status);
           });

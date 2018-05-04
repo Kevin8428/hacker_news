@@ -14,7 +14,6 @@ type UsersRepository struct {
 }
 
 func (u *UsersRepository) FindUserByAuthToken(token string) domain.User {
-	fmt.Println("----auth token: ", token)
 	stmt, err := u.DB.Prepare("SELECT id, first_name, last_name, email, password, auth_token FROM users WHERE auth_token = $1")
 	var (
 		ID        int
@@ -29,7 +28,6 @@ func (u *UsersRepository) FindUserByAuthToken(token string) domain.User {
 		fmt.Println("cant find record: ", err)
 		return domain.User{}
 	}
-	fmt.Println(FirstName)
 	isLoggedIn := ID > 0
 	return domain.User{
 		ID:         ID,
