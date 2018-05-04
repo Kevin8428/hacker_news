@@ -13,10 +13,42 @@ type UsersRepository struct {
 	DB *sql.DB
 }
 
+func (u *UsersRepository) FindUserByAuthToken(token string) domain.User {
+	fmt.Println("----auth token: ", token)
+	stmt, err := u.DB.Prepare("SELECT id, first_name, last_name, email, password, auth_token FROM users WHERE auth_token = $1")
+	var (
+		ID        int
+		FirstName string
+		LastName  string
+		Email     string
+		Password  string
+		AuthToken string
+	)
+	err = stmt.QueryRow(token).Scan(&ID, &FirstName, &LastName, &Email, &Password, &AuthToken)
+	if err != nil {
+		fmt.Println("cant find record: ", err)
+		return domain.User{}
+	}
+	fmt.Println(FirstName)
+	isLoggedIn := ID > 0
+	return domain.User{
+		ID:         ID,
+		FirstName:  FirstName,
+		LastName:   LastName,
+		Password:   Password,
+		IsLoggedIn: isLoggedIn,
+	}
+}
+
 // FindUserArticlesByUserID is a method
 func (u *UsersRepository) FindUserArticlesByUserID(id int) []domain.Article {
 	articles := []domain.Article{}
-	rows, _ := u.DB.Query("SELECT user_id, title, website, category, author, link FROM user_articles WHERE user_id = $1", id)
+	rows, err := u.DB.Query("SELECT user_id, title, website, category, author, link FROM user_articles WHERE user_id = $1", id)
+	if err != nil {
+		fmt.Println("cant find record: ", err)
+		return []domain.Article{}
+	}
+	defer rows.Close()
 	for rows.Next() {
 		var (
 			userID   sql.NullInt64

@@ -1,12 +1,16 @@
 package users
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"text/template"
+
+	"github.com/kevin8428/hackernews/domain"
 )
 
 type controller struct {
@@ -69,5 +73,35 @@ func (c *controller) SaveUserArticle() http.Handler {
 		}
 		id, _ := strconv.Atoi(userID)
 		c.Service.SaveArticleToUser(name, author, website, id, category, url)
+	})
+}
+
+func (c *controller) ShowArticlesAll() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		t, err := template.ParseFiles("homepage.html")
+		a := []domain.Article{}
+		res, err := http.Get("http://localhost:5050/articles")
+		if err != nil {
+			panic(err.Error())
+		}
+		defer res.Body.Close()
+		body, err := ioutil.ReadAll(res.Body)
+		err = json.Unmarshal(body, &a)
+		if err != nil {
+			fmt.Println("unmarshall error: ", err)
+		}
+		user := domain.User{}
+		token, err := r.Cookie("hn_auth_token")
+		if err == nil {
+			user, err = c.Service.FindUserByAuth(token.Value)
+		}
+		data := struct {
+			Articles []domain.Article
+			User     domain.User
+		}{
+			Articles: a,
+			User:     user,
+		}
+		err = t.Execute(w, data)
 	})
 }

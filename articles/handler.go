@@ -8,5 +8,4 @@ import (
 func InitializeHandler(server *http.ServeMux, as Service) {
 	controller := makeController(as)
 	server.Handle("/category/", controller.ShowArticlesCategory())
-	server.Handle("/", controller.ShowArticlesAll())
 }

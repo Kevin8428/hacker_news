@@ -11,6 +11,7 @@ type Service interface {
 	SaveNewUser() ServiceResponse
 	FindArticles(id int) []domain.Article
 	FindUser(id int) domain.User
+	FindUserByAuth(token string) (domain.User, error)
 }
 
 type service struct {
@@ -34,6 +35,10 @@ func (s *service) SaveNewUser() ServiceResponse {
 	return ServiceResponse{
 		valid: true,
 	}
+}
+func (s *service) FindUserByAuth(token string) (domain.User, error) {
+	user := s.Users.FindUserByAuthToken(token)
+	return user, nil
 }
 
 func (s *service) FindArticles(id int) []domain.Article {

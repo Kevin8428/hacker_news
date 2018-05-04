@@ -5,11 +5,23 @@
       border-bottom: 2px solid black;
       padding-bottom: 2rem;
     }
+    .hide{
+      display: none;
+    }
     </style>
   </head>
   <body>
+    <!-- <h3><button>sign in</button> <button class="hide">sign out</button></h3> -->
+    <form action="/sign-in" method="POST">
+      <input type="email" name="email" placeholder="email">
+      <input type="password" name="password" placeholder="password">
+      <input type="submit">
+    </form>
     <h1>home page</h1>
-    {{ range . }}
+    {{ if .User.IsLoggedIn }}
+      <div>USER IS LOGGED IN</div>
+    {{ end }}
+    {{ range .Articles }}
     <div class="row">
       <h3 class="name">{{ .Title }}</h3>
       <h4 class="author">{{ .Author }}</h4>
