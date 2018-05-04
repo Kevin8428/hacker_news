@@ -3,12 +3,14 @@ package api
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/kevin8428/hackernews/domain"
 )
 
 type Articles struct{}
 
 func (h Articles) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	a := []Article{
+	a := []domain.Article{
 		{
 			Name:     "article 1 some long title name here",
 			Author:   "kevin",

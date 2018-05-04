@@ -33,12 +33,13 @@ func main() {
 	database := repos.Initialize()
 	// defer database.Articles.Close()
 	as := articles.NewService(database.Articles)
+	us := users.NewService(database.Users)
 	////////////////implement with handler////////////////
 	server := http.NewServeMux()
 	articles.InitializeHandler(server, as)
-
+	users.InitializeHandler(server, us)
 	server.Handle("/articles", api.Articles{})
-	server.Handle("/user", users.User{})
+	// server.Handle("/user", users.User{})
 	server.Handle("/add-article", users.AddArticle{})
 	server.Handle("/", handler{})
 	err := http.ListenAndServe(":5050", server)

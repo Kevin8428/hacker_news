@@ -3,13 +3,13 @@ package repos
 import (
 	"database/sql"
 
-	"github.com/kevin8428/hackernews/api"
+	"github.com/kevin8428/hackernews/domain"
 )
 
 type ArticlesRepository struct {
 	db *sql.DB
 }
 
-func (a *ArticlesRepository) FindArticlesByUserID(int) []api.Article {
-	return []api.Article{}
+func (a *ArticlesRepository) FindArticlesByUserID(int) []domain.Article {
+	return []domain.Article{}
 }

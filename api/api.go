@@ -5,19 +5,21 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/kevin8428/hackernews/domain"
 )
 
-// Article is a struct
-type Article struct {
-	Name     string `json:"Name"`
-	Author   string `json:"Author"`
-	Website  string `json:"Website"`
-	Category string `json:"Category"`
-}
+// // Article is a struct
+// type Article struct {
+// 	Name     string `json:"Name"`
+// 	Author   string `json:"Author"`
+// 	Website  string `json:"Website"`
+// 	Category string `json:"Category"`
+// }
 
 // GetArticles is a function
-func GetArticles() []Article {
-	a := []Article{}
+func GetArticles() []domain.Article {
+	a := []domain.Article{}
 	res, err := http.Get("http://localhost:5050/articles")
 	if err != nil {
 		fmt.Println("error1: ", err)
