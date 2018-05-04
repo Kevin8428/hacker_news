@@ -5,5 +5,5 @@ type User struct {
 	firstName string
 	LastName  string
 	Password  string
-	Articles  string
+	Articles  []Article
 }

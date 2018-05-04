@@ -24,7 +24,7 @@
           var name = encodeURIComponent(this.parentElement.getElementsByClassName('name')[0].innerHTML),
           author = encodeURIComponent(this.parentElement.getElementsByClassName('author')[0].innerHTML),
           website = encodeURIComponent(this.parentElement.getElementsByClassName('website')[0].innerHTML);
-          fetch('http://localhost:5050/add-article?user_id='+this.id+'&author='+author+'&name='+name+'&website='+website)
+          fetch('http://localhost:5050/save-article?user_id='+this.id+'&author='+author+'&name='+name+'&website='+website)
           .then(function(response) {
           console.log(response.status);
           });

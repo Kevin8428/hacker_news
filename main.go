@@ -19,7 +19,7 @@ func main() {
 	server := http.NewServeMux()
 	articles.InitializeHandler(server, as)
 	users.InitializeHandler(server, us)
-	server.Handle("/articles", api.Articles{})
+	api.InitializeHandler(server)
 	err := http.ListenAndServe(":5050", server)
 	if err != nil {
 		panic(err)
