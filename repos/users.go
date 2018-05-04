@@ -13,8 +13,7 @@ type UsersRepository struct {
 	DB *sql.DB
 }
 
-// INSERT INTO user_articles(user_id, title, website, category, author, link)
-
+// FindUserArticlesByUserID is a method
 func (u *UsersRepository) FindUserArticlesByUserID(id int) []domain.Article {
 	articles := []domain.Article{}
 	rows, _ := u.DB.Query("SELECT user_id, title, website, category, author, link FROM user_articles WHERE user_id = $1", id)
