@@ -13,14 +13,42 @@ type UsersRepository struct {
 	DB *sql.DB
 }
 
+// INSERT INTO user_articles(user_id, title, website, category, author, link)
+
+func (u *UsersRepository) FindUserArticlesByUserID(id int) []domain.Article {
+	articles := []domain.Article{}
+	rows, _ := u.DB.Query("SELECT user_id, title, website, category, author, link FROM user_articles WHERE user_id = $1", id)
+	for rows.Next() {
+		var (
+			userID   sql.NullInt64
+			title    sql.NullString
+			website  sql.NullString
+			category sql.NullString
+			author   sql.NullString
+			url      sql.NullString
+		)
+		if err := rows.Scan(&userID, &title, &website, &category, &author, &url); err != nil {
+			fmt.Printf("error scanning articles: %v", err)
+			continue
+		}
+		article := domain.Article{
+			UserID:   int(userID.Int64),
+			Title:    title.String,
+			Website:  website.String,
+			Category: category.String,
+			Author:   author.String,
+			URL:      url.String,
+		}
+		articles = append(articles, article)
+	}
+	return []domain.Article{}
+}
+
 // FindUsersByUserID method
 func (u *UsersRepository) FindUsersByUserID(userID int) domain.User {
-	query := `SELECT last_name FROM users WHERE id = $1`
-	rows, error := u.DB.Query(query, userID)
-	if error != nil {
-		fmt.Println("error1: ", error)
-		panic(error)
-		return domain.User{}
+	rows, err := u.DB.Query("SELECT last_name FROM users WHERE id = $1", userID)
+	if err != nil {
+		panic(err)
 	}
 	defer rows.Close()
 	var lastName string
@@ -29,7 +57,6 @@ func (u *UsersRepository) FindUsersByUserID(userID int) domain.User {
 			log.Fatal(err)
 		}
 	}
-	fmt.Println("lastName: ", lastName)
 	return domain.User{
 		LastName: lastName,
 	}

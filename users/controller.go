@@ -36,6 +36,7 @@ func (c *controller) ShowUser() http.Handler {
 		userID := r.Form["id"][0]
 		id, _ := strconv.Atoi(userID)
 		user := c.Service.FindUser(id)
+		articles := c.Service.FindUserArticlesByUserID(id)
 		u := domain.User{
 			LastName: user.LastName,
 		}

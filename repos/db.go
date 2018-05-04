@@ -23,3 +23,22 @@ func Initialize() *Repositories {
 		Users:    &UsersRepository{db},
 	}
 }
+
+// CREATE TABLE users (
+//   id SERIAL PRIMARY KEY,
+//   first_name TEXT,
+//   last_name TEXT,
+//   password TEXT NOT NULL
+// );
+// CREATE TABLE articles (
+//   id SERIAL PRIMARY KEY,
+//   title TEXT,
+//   site TEXT,
+//   category TEXT,
+//   author TEXT,
+//   link TEXT
+// );
+// CREATE TABLE users_articles (
+//   user_id INT REFERENCES users (id),
+//   article_id INT REFERENCES articles (id)
+// );

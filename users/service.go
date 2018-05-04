@@ -8,7 +8,7 @@ import (
 // methods of of service struct
 type Service interface {
 	SaveArticle(string, string, string, int) error
-	FindUser(int) domain.User
+	ShowUserService(int) domain.User
 	SaveNewUser() ServiceResponse
 }
 
@@ -35,8 +35,12 @@ func (s *service) SaveNewUser() ServiceResponse {
 	}
 }
 
-func (s *service) FindUser(id int) domain.User {
-	return s.Users.FindUsersByUserID(id)
+func (s *service) ShowUserService(id int) ServiceResponse {
+	// return s.Users.FindUsersByUserID(id)
+}
+
+func (s *service) FindUserArticles(id int) domain.User {
+	return s.Users.FindUserArticlesByUserID(id)
 }
 
 func (s *service) SaveArticle(name string, author string, website string, id int) error {
