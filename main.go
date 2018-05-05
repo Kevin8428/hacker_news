@@ -5,6 +5,7 @@ import (
 
 	"github.com/kevin8428/hackernews/api"
 	"github.com/kevin8428/hackernews/articles"
+	"github.com/kevin8428/hackernews/authentication"
 	"github.com/kevin8428/hackernews/repos"
 	"github.com/kevin8428/hackernews/users"
 	_ "github.com/lib/pq"
@@ -19,6 +20,7 @@ func main() {
 	server := http.NewServeMux()
 	articles.InitializeHandler(server, as)
 	users.InitializeHandler(server, us)
+	authentication.InitializeHandler(server, *database.Users)
 	api.InitializeHandler(server)
 	err := http.ListenAndServe(":5050", server)
 	if err != nil {

@@ -25,28 +25,23 @@ func Initialize() *Repositories {
 }
 
 // CREATE TABLE users (
-//   id SERIAL PRIMARY KEY,
-//   first_name TEXT,
-//   last_name TEXT,
-//   password TEXT NOT NULL
-// );
-// CREATE TABLE articles (
-//   id SERIAL PRIMARY KEY,
-//   title TEXT,
-//   site TEXT,ß
-//   category TEXT,
-//   author TEXT,
-//   link TEXT
-// );
-// CREATE TABLE users_articles (
-//   user_id INT REFERENCES users (id),
-//   article_id INT REFERENCES articles (id)
+// 	id SERIAL PRIMARY KEY,
+// 	first_name TEXT,
+// 	last_name TEXT,
+// 	email TEXT,
+// 	password TEXT,
+// 	auth_token TEXT
 // );
 
-// INSERT INTO users (first_name, last_name, email, password) VALUES ('kevin', 'deutscher', 'kevin@mail.com','password');
-// INSERT INTO users (first_name, last_name, email, password) VALUES ('john', 'doe', 'john@mail.com','password');
-// INSERT INTO users (first_name, last_name, email, password) VALUES ('jane', 'smith', 'jane@mail.com','password');
+// CREATE TABLE user_articles (
+// 	user_id INT,
+// 	title TEXT,
+// 	website TEXT,
+// 	category TEXT,
+// 	author TEXT,
+// 	link TEXT
+// );
 
-// INSERT INTO user_articles(user_id, title, website, category, author, link) VALUES ((select id from users where email = 'kevin@mail.com'), 'article 1 some long title name here', 'cnn', 'politics', 'ben author', 'https://www.cnn.com');
-// INSERT INTO user_articles(user_id, title, website, category, author, link) VALUES ((select id from users where email = 'kevin@mail.com'), 'article 2 some long title name here', 'cnn', 'politics', 'ben author', 'https://www.cnn.com');
-// INSERT INTO user_articles(user_id, title, website, category, author, link) VALUES ((select id from users where email = 'kevin@mail.com'), 'article 3 some long title name here', 'cnn', 'politics', 'ben author', 'https://www.cnn.com');
+// INSERT INTO users (first_name, last_name, email, password, auth_token) VALUES ('kevin', 'deutscher', 'kevin@mail.com', 'password', '1234');
+// INSERT INTO users (first_name, last_name, email, password, auth_token) VALUES ('john', 'doe', 'john@mail.com', 'password', '3242');
+// INSERT INTO users (first_name, last_name, email, password, auth_token) VALUES ('joe', 'smith', 'joe@mail.com', 'password', '1212');

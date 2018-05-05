@@ -100,3 +100,20 @@ func (u *UsersRepository) SaveArticle(name string, author string, website string
 	}
 	return err
 }
+
+func (u *UsersRepository) GetPasswordUsingEmail(email string) (string, error) {
+	rows, err := u.DB.Query("SELECT password FROM users WHERE email = $1", email)
+	if err != nil {
+		fmt.Println("cant find record: ", err)
+		return "", err
+	}
+	defer rows.Close()
+	var password sql.NullString
+	for rows.Next() {
+		if err := rows.Scan(&password); err != nil {
+			fmt.Printf("error scanning: %v", err)
+			return "", err
+		}
+	}
+	return password.String, nil
+}
