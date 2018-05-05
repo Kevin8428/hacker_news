@@ -12,9 +12,9 @@
   </head>
   <body>
     <!-- <h3><button>sign in</button> <button class="hide">sign out</button></h3> -->
-    <form {{ if .User.IsLoggedIn }} class="hide" {{ end }} action="/sign-in" method="POST">
-      <input type="email" name="email" placeholder="email">
-      <input type="password" name="password" placeholder="password">
+    <form id="sign-in-form" {{ if .User.IsLoggedIn }} class="hide" {{ end }} action="/sign-in" method="POST">
+      <input id="email" type="email" name="email" placeholder="email">
+      <input id="password" type="password" name="password" placeholder="password">
       <input type="submit">
     </form>
     <h1>home page</h1>
@@ -30,6 +30,21 @@
     </div>
     {{ end }}
     <script>
+      document.getElementById('sign-in-form').addEventListener('submit', function(ev){
+        ev.preventDefault();
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '/sign-in', true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {//Call a function when the state changes.
+        if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+            console.log(xhr.responseText);
+        }
+      }
+      var email = document.getElementById('email').value,
+      password = document.getElementById('password').value;
+      xhr.send("email="+email+'&password='+password);         
+      })
+
       var buttons = document.querySelectorAll('button');
       for (let i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener('click', function(){
@@ -41,7 +56,7 @@
           console.log(response.status);
           });
         });
-      }
+      };
     </script>
   </body>
 </html>
