@@ -36,7 +36,7 @@ window.onload = function(){
         userID = document.getElementById('user-id').getAttribute('value');;
         fetch('http://localhost:5050/save-article?user_id='+userID+'&author='+author+'&name='+name+'&website='+website)
         .then(function(response) {
-        console.log(response.status);
+          console.log(response.status);
         });
       });
     };
@@ -49,5 +49,53 @@ window.onload = function(){
         location.reload();
       });        
     }
+  }
+
+
+
+  var conn,
+  msg = document.getElementById('submit-message'),
+  log = document.getElementById('all-messages');
+
+  function appendToChat(msg) {
+    log.appendChild(msg)
+  }
+
+  document.getElementById('submit-message-form').addEventListener('submit', function(e){
+    e.preventDefault();
+      if (!conn) {
+        console.log("no connection")
+        return false;
+      }
+      if (!msg.value) {
+        console.log("no value")
+        return false;
+      }
+      conn.send(msg.value);
+      msg.value = "";
+      
+      var messages = document.getElementById('all-messages')
+      if(messages) {
+        messages.scrollTop = messages.scrollHeight;
+      }
+      return false
+  });
+
+  if (window["WebSocket"]) {
+    conn = new WebSocket("ws://localhost:5050/homepage-ws");
+    conn.onclose = function(evt) {
+      var comment = document.createElement('div');
+      comment.innerHTML = '<b>Connection closed.<\/b>';
+      appendToChat(comment)
+    }
+    conn.onmessage = function(evt) {
+      var comment = document.createElement('div');
+      comment.innerHTML = evt.data;
+      appendToChat(comment)
+    }
+  } else {
+    var comment = document.createElement('div');
+    comment.innerHTML = '<b>Your browser does not support WebSockets.<\/b>';
+    appendToChat(comment)
   }
 }

@@ -1,39 +1,40 @@
 <html>
   <head>
-    <style>
-    .row{
-      border-bottom: 2px solid black;
-      padding-bottom: 2rem;
-    }
-    .hide{
-      display: none;
-    }
-    </style>
     <script src="/static/app.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/static/style.css">
   </head>
   <body>
-    <div id="homepage-wrapper">          
-      {{ if .User.IsLoggedIn }}
-        <h1>hello {{ .User.FirstName }}</h1>
-        <button id="sign-out">Sign out</button>
-      {{ else }}
-        <form id="sign-in-form" {{ if .User.IsLoggedIn }} class="hide" {{ end }} action="/sign-in" method="POST">
-          <input id="email" type="email" name="email" placeholder="email">
-          <input id="password" type="password" name="password" placeholder="password">
-          <input type="submit">
-        </form>
-      {{ end }}
-      {{ range .Articles }}
-      <div class="row">
-        <h3 class="name">{{ .Title }}</h3>
-        <h4 class="author">{{ .Author }}</h4>
-        <div class="website">{{ .Website }}</div>
-        {{ if $.User.IsLoggedIn }}
-          <button>add to my articles</button>
+    <div id="homepage-wrapper">
+      <div class="articles-wrapper">
+        {{ if .User.IsLoggedIn }}
+          <h1>hello {{ .User.FirstName }}</h1>
+          <button id="sign-out">Sign out</button>
+        {{ else }}
+          <form id="sign-in-form" {{ if .User.IsLoggedIn }} class="hide" {{ end }} action="/sign-in" method="POST">
+            <input id="email" type="email" name="email" placeholder="email">
+            <input id="password" type="password" name="password" placeholder="password">
+            <input type="submit">
+          </form>
         {{ end }}
+        {{ range .Articles }}
+        <div class="row">
+          <h3 class="name">{{ .Title }}</h3>
+          <h4 class="author">{{ .Author }}</h4>
+          <div class="website">{{ .Website }}</div>
+          {{ if $.User.IsLoggedIn }}
+            <button>add to my articles</button>
+          {{ end }}
+        </div>
+        {{ end }}
+        <div class="hide" id="user-id" value={{ .User.ID }}></div>
       </div>
-      {{ end }}
-      <div class="hide" id="user-id" value={{ .User.ID }}></div>
+      <div class="sockets-wrapper">
+          <div id="all-messages"></div>
+          <form id="submit-message-form" name="form">
+              <input type="submit" value="Send!"> 
+              <input id="submit-message" size="64" type="text">
+          </form>
+      </div>
     </div>
   </body>
 </html>

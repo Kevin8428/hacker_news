@@ -1,0 +1,21 @@
+.row {
+  border-bottom: 2px solid black;
+  padding-bottom: 2rem;
+}
+.hide {
+  display: none;
+}
+#homepage-wrapper {
+  display: flex;
+}
+.articles-wrapper {
+  width: 70%
+}
+.sockets-wrapper {
+  width: 20%;
+}
+#all-messages {
+  height: 20rem;
+  background: lightgrey;
+  overflow: scroll;
+}
