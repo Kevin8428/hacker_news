@@ -11,15 +11,16 @@
     </style>
   </head>
   <body>
-    <!-- <h3><button>sign in</button> <button class="hide">sign out</button></h3> -->
-    <form id="sign-in-form" {{ if .User.IsLoggedIn }} class="hide" {{ end }} action="/sign-in" method="POST">
-      <input id="email" type="email" name="email" placeholder="email">
-      <input id="password" type="password" name="password" placeholder="password">
-      <input type="submit">
-    </form>
+    <!-- <h3><button>sign in</button> <button class="hide">sign out</button></h3> -->    
     <h1>home page</h1>
     {{ if .User.IsLoggedIn }}
       <div>USER IS LOGGED IN AS USER {{ .User.ID }}</div>
+    {{ else }}
+      <form id="sign-in-form" {{ if .User.IsLoggedIn }} class="hide" {{ end }} action="/sign-in" method="POST">
+        <input id="email" type="email" name="email" placeholder="email">
+        <input id="password" type="password" name="password" placeholder="password">
+        <input type="submit">
+      </form>
     {{ end }}
     {{ range .Articles }}
     <div class="row">
@@ -30,20 +31,27 @@
     </div>
     {{ end }}
     <script>
-      document.getElementById('sign-in-form').addEventListener('submit', function(ev){
+      var form = document.getElementById('sign-in-form');
+      if (form) {
+        document.getElementById('sign-in-form').addEventListener('submit', function(ev){
         ev.preventDefault();
         var xhr = new XMLHttpRequest();
         xhr.open("POST", '/sign-in', true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function() {//Call a function when the state changes.
-        if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+          if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
             console.log(xhr.responseText);
+            if (xhr.responseText.length > 0) {
+              location.reload();
+              document.cookie = "hn_auth_token="+xhr.responseText
+            }
+          }
         }
+        var email = document.getElementById('email').value,
+        password = document.getElementById('password').value;
+        xhr.send("email="+email+'&password='+password);         
+        });
       }
-      var email = document.getElementById('email').value,
-      password = document.getElementById('password').value;
-      xhr.send("email="+email+'&password='+password);         
-      })
 
       var buttons = document.querySelectorAll('button');
       for (let i = 0; i < buttons.length; i++) {

@@ -101,19 +101,20 @@ func (u *UsersRepository) SaveArticle(name string, author string, website string
 	return err
 }
 
-func (u *UsersRepository) GetPasswordUsingEmail(email string) (string, error) {
-	rows, err := u.DB.Query("SELECT password FROM users WHERE email = $1", email)
+func (u *UsersRepository) GetPasswordUsingEmail(email string) (string, string, error) {
+	rows, err := u.DB.Query("SELECT password, auth_token FROM users WHERE email = $1", email)
 	if err != nil {
 		fmt.Println("cant find record: ", err)
-		return "", err
+		return "", "", err
 	}
 	defer rows.Close()
 	var password sql.NullString
+	var token sql.NullString
 	for rows.Next() {
-		if err := rows.Scan(&password); err != nil {
+		if err := rows.Scan(&password, &token); err != nil {
 			fmt.Printf("error scanning: %v", err)
-			return "", err
+			return "", "", err
 		}
 	}
-	return password.String, nil
+	return password.String, token.String, nil
 }
