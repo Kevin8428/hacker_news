@@ -15,6 +15,7 @@
     <h1>home page</h1>
     {{ if .User.IsLoggedIn }}
       <div>USER IS LOGGED IN AS USER {{ .User.ID }}</div>
+      <button id="sign-out">Sign out</button>
     {{ else }}
       <form id="sign-in-form" {{ if .User.IsLoggedIn }} class="hide" {{ end }} action="/sign-in" method="POST">
         <input id="email" type="email" name="email" placeholder="email">
@@ -44,6 +45,8 @@
             if (xhr.responseText.length > 0) {
               location.reload();
               document.cookie = "hn_auth_token="+xhr.responseText
+            } else {
+              alert("incorrect password");
             }
           }
         }
@@ -65,6 +68,15 @@
           });
         });
       };
+
+      var signOut = document.getElementById('sign-out');
+      if (signOut) {
+        signOut.addEventListener('click', function(){
+          document.cookie = 'hn_auth_token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          // console.log('---fds')
+          location.reload();
+        });        
+      }
     </script>
   </body>
 </html>
