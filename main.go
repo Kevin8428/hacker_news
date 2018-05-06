@@ -18,6 +18,9 @@ func main() {
 	as := articles.NewService(database.Articles)
 	us := users.NewService(database.Users)
 	server := http.NewServeMux()
+	server.Handle("/static/app.js", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./static/app.js")
+	}))
 	articles.InitializeHandler(server, as)
 	users.InitializeHandler(server, us)
 	authentication.InitializeHandler(server, *database.Users)
