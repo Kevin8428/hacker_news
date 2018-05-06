@@ -20,12 +20,7 @@ func main() {
 	us := users.NewService(database.Users)
 	h := websockets.NewHub()
 	server := http.NewServeMux()
-	server.Handle("/static/app.js", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./static/app.js")
-	}))
-	server.Handle("/static/style.css", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./static/style.css")
-	}))
+	InitializeStaticFiles(server)
 	articles.InitializeHandler(server, as)
 	users.InitializeHandler(server, us)
 	authentication.InitializeHandler(server, *database.Users)
@@ -35,4 +30,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func InitializeStaticFiles(server *http.ServeMux) {
+	server.Handle("/static/app.js", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./static/app.js")
+	}))
+	server.Handle("/static/style.css", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./static/style.css")
+	}))
 }

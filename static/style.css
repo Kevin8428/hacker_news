@@ -7,6 +7,7 @@
 }
 #homepage-wrapper {
   display: flex;
+  flex-wrap: wrap;
 }
 .articles-wrapper {
   width: 70%
@@ -18,4 +19,17 @@
   height: 20rem;
   background: lightgrey;
   overflow: scroll;
+}
+.header {
+  width: 100%;
+  height: 3rem;
+  background: lightslategray;
+}
+.header h1{
+  margin: 0;
+  width: 20%;
+  display: inline-block;
+}
+#submit-message{
+  width: 100%;
 }

@@ -27,7 +27,7 @@ window.onload = function(){
       });
     }
   
-    var buttons = document.querySelectorAll('button');
+    var buttons = document.getElementsByClassName('add-article');
     for (let i = 0; i < buttons.length; i++) {
       buttons[i].addEventListener('click', function(){
         var name = encodeURIComponent(this.parentElement.getElementsByClassName('name')[0].innerHTML),
@@ -60,26 +60,28 @@ window.onload = function(){
   function appendToChat(msg) {
     log.appendChild(msg)
   }
-
-  document.getElementById('submit-message-form').addEventListener('submit', function(e){
-    e.preventDefault();
-      if (!conn) {
-        console.log("no connection")
-        return false;
-      }
-      if (!msg.value) {
-        console.log("no value")
-        return false;
-      }
-      conn.send(msg.value);
-      msg.value = "";
-      
-      var messages = document.getElementById('all-messages')
-      if(messages) {
-        messages.scrollTop = messages.scrollHeight;
-      }
-      return false
-  });
+  var submitMessageForm = document.getElementById('submit-message-form');
+  if (submitMessageForm) {
+    document.getElementById('submit-message-form').addEventListener('submit', function(e){
+      e.preventDefault();
+        if (!conn) {
+          console.log("no connection")
+          return false;
+        }
+        if (!msg.value) {
+          console.log("no value")
+          return false;
+        }
+        conn.send(msg.value);
+        msg.value = "";
+        
+        var messages = document.getElementById('all-messages')
+        if(messages) {
+          messages.scrollTop = messages.scrollHeight;
+        }
+        return false
+    });
+  }
 
   if (window["WebSocket"]) {
     conn = new WebSocket("ws://localhost:5050/homepage-ws");

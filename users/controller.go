@@ -79,14 +79,16 @@ func (c *controller) SaveUserArticle() http.Handler {
 func (c *controller) ShowArticlesAll() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		t, err := template.ParseFiles("homepage.html")
-		a := []domain.Article{}
-		res, err := http.Get("http://localhost:5050/articles")
+		// a := domain.Article{}
+		a := domain.ParentArticle{}
+		res, err := http.Get("http://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=077b4207f05d4cebb3ac79d21915aceb")
 		if err != nil {
 			panic(err.Error())
 		}
 		defer res.Body.Close()
 		body, err := ioutil.ReadAll(res.Body)
 		err = json.Unmarshal(body, &a)
+		fmt.Printf("resp: %+v\n", a)
 		if err != nil {
 			fmt.Println("unmarshall error: ", err)
 		}
@@ -96,7 +98,7 @@ func (c *controller) ShowArticlesAll() http.Handler {
 			user, err = c.Service.FindUserByAuth(token.Value)
 		}
 		data := struct {
-			Articles []domain.Article
+			Articles domain.ParentArticle
 			User     domain.User
 		}{
 			Articles: a,

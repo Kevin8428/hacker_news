@@ -5,8 +5,8 @@
   </head>
   <body>
     <div id="homepage-wrapper">
-      <div class="articles-wrapper">
-        {{ if .User.IsLoggedIn }}
+      <div class="header">
+          {{ if .User.IsLoggedIn }}
           <h1>hello {{ .User.FirstName }}</h1>
           <button id="sign-out">Sign out</button>
         {{ else }}
@@ -16,12 +16,15 @@
             <input type="submit">
           </form>
         {{ end }}
-        {{ range .Articles }}
+      </div>      
+      <div class="articles-wrapper">        
+        {{ range .Articles.Articles }}
         <div class="row">
-          <h3 class="name">{{ .Title }}</h3>
-          <h4 class="author">{{ .Author }}</h4>
-          <div class="website">{{ .Website }}</div>
+          <h3>{{ .Title }}</h3>
+          <h4>{{ .Author }}</h4>
+          <a href={{ .URL }} target="_blank">go to article</a>          
           {{ if $.User.IsLoggedIn }}
+            <br>
             <button>add to my articles</button>
           {{ end }}
         </div>
@@ -34,7 +37,7 @@
               <input type="submit" value="Send!"> 
               <input id="submit-message" size="64" type="text">
           </form>
-      </div>
+      </div>  
     </div>
   </body>
 </html>
