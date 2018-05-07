@@ -20,16 +20,19 @@
       <div class="articles-wrapper">        
         {{ range .Articles.Articles }}
         <div class="row">
-          <h3>{{ .Title }}</h3>
-          <h4>{{ .Author }}</h4>
-          <a href={{ .URL }} target="_blank">go to article</a>          
+          <h3 class="title">{{ .Title }}</h3>
+          <h4 class="author">{{ .Author }}</h4>
+          <h4 class="website">{{ .Source.Website }}</h4>
+          <a class="url" href={{ .URL }} target="_blank">go to article</a>          
           {{ if $.User.IsLoggedIn }}
             <br>
-            <button>add to my articles</button>
+            <button class="add-article">add to my articles</button>
           {{ end }}
         </div>
         {{ end }}
         <div class="hide" id="user-id" value={{ .User.ID }}></div>
+        <div class="hide" id="first-name" value={{ .User.FirstName }}></div>
+        <div class="hide" id="last-name" value={{ .User.LastName }}></div>
       </div>
       <div class="sockets-wrapper">
           <div id="all-messages"></div>

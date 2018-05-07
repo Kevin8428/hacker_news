@@ -30,11 +30,12 @@ window.onload = function(){
     var buttons = document.getElementsByClassName('add-article');
     for (let i = 0; i < buttons.length; i++) {
       buttons[i].addEventListener('click', function(){
-        var name = encodeURIComponent(this.parentElement.getElementsByClassName('name')[0].innerHTML),
+        var name = encodeURIComponent(this.parentElement.getElementsByClassName('title')[0].innerHTML),
         author = encodeURIComponent(this.parentElement.getElementsByClassName('author')[0].innerHTML),
         website = encodeURIComponent(this.parentElement.getElementsByClassName('website')[0].innerHTML),
-        userID = document.getElementById('user-id').getAttribute('value');;
-        fetch('http://localhost:5050/save-article?user_id='+userID+'&author='+author+'&name='+name+'&website='+website)
+        userID = document.getElementById('user-id').getAttribute('value'),
+        url = encodeURIComponent(this.parentElement.getElementsByClassName('url')[0].getAttribute('href'));
+        fetch('http://localhost:5050/save-article?user_id='+userID+'&author='+author+'&name='+name+'&website='+website+'&url='+url)
         .then(function(response) {
           console.log(response.status);
         });
@@ -91,8 +92,10 @@ window.onload = function(){
       appendToChat(comment)
     }
     conn.onmessage = function(evt) {
-      var comment = document.createElement('div');
-      comment.innerHTML = evt.data;
+      var comment = document.createElement('div'),
+      fn = document.getElementById('first-name').getAttribute('value').charAt(0)
+      ln = document.getElementById('last-name').getAttribute('value').charAt(0)
+      comment.innerHTML = '<b>'+fn+ln+': <\/b>'+evt.data;
       appendToChat(comment)
     }
   } else {

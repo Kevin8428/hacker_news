@@ -88,7 +88,6 @@ func (c *controller) ShowArticlesAll() http.Handler {
 		defer res.Body.Close()
 		body, err := ioutil.ReadAll(res.Body)
 		err = json.Unmarshal(body, &a)
-		fmt.Printf("resp: %+v\n", a)
 		if err != nil {
 			fmt.Println("unmarshall error: ", err)
 		}

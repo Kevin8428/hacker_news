@@ -7,12 +7,13 @@
     </style>
   </head>
   <body>
-    <h1>user page for: {{ .LastName }}</h1>
+    <h1>user page for: {{ .FirstName }} {{ .LastName }}</h1>
     <ul>
     {{ range .Articles }}      
       <li>{{ .Title }}</li>
       <li>{{ .Author }}</li>
       <li>{{ .Website }}</li>
+      <li><a href={{ .URL }} target="_blank">link</a></li>
       <hr>
     {{ end }}
   </ul>

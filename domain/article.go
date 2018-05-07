@@ -16,5 +16,9 @@ type ParentArticle struct {
 		Author string `json:"author"`
 		Title  string `json:"title"`
 		URL    string `json:url`
+		Source struct {
+			ID      string `json:"id"`
+			Website string `json:"name"`
+		} `json:source`
 	} `json:"articles"`
 }
