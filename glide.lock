@@ -1,0 +1,15 @@
+hash: f667bb9e710d98c6700b7e4113042283fb98bd7cfa6fd75c8c4cb4ccdfdbd898
+updated: 2018-05-07T09:04:57.338489523-04:00
+imports:
+- name: github.com/gorilla/websocket
+  version: 21ab95fa12b9bdd8fecf5fa3586aad941cc98785
+- name: github.com/lib/pq
+  version: d34b9ff171c21ad295489235aec8b6626023cd04
+  subpackages:
+  - oid
+- name: golang.org/x/crypto
+  version: 4ec37c66abab2c7e02ae775328b2ff001c3f025a
+  subpackages:
+  - bcrypt
+  - blowfish
+testImports: []
