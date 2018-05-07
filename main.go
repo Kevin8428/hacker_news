@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/kevin8428/hackernews/api"
 	"github.com/kevin8428/hackernews/articles"
@@ -13,6 +15,8 @@ import (
 )
 
 func main() {
+	port := ":" + os.Getenv("PORT")
+	fmt.Println("port: ", port)
 	database := repos.Initialize()
 	defer database.Articles.DB.Close()
 	defer database.Users.DB.Close()
@@ -26,7 +30,7 @@ func main() {
 	authentication.InitializeHandler(server, *database.Users)
 	api.InitializeHandler(server)
 	websockets.InitializeHandler(server, h)
-	err := http.ListenAndServe(":5050", server)
+	err := http.ListenAndServe(port, server)
 	if err != nil {
 		panic(err)
 	}
