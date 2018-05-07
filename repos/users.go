@@ -118,3 +118,13 @@ func (u *UsersRepository) GetPasswordUsingEmail(email string) (string, string, e
 	}
 	return password.String, token.String, nil
 }
+
+// CreateUser(email, password, fn, ln)
+func (u *UsersRepository) CreateUser(token string, email string, password string, fn string, ln string) (string, error) {
+	_, err := u.DB.Query("INSERT INTO users (first_name, last_name, email, password, auth_token) VALUES ($1, $2, $3, $4, $5)", fn, ln, email, password, token)
+	if err != nil {
+		fmt.Println("insert error: ", err)
+		return "", err
+	}
+	return token, err
+}

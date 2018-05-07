@@ -33,3 +33,6 @@
 #submit-message{
   width: 100%;
 }
+form {
+  display: inline;
+}

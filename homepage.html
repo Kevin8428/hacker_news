@@ -13,7 +13,15 @@
           <form id="sign-in-form" {{ if .User.IsLoggedIn }} class="hide" {{ end }} action="/sign-in" method="POST">
             <input id="email" type="email" name="email" placeholder="email">
             <input id="password" type="password" name="password" placeholder="password">
-            <input type="submit">
+            <input type="submit" value="sign in">
+          </form>
+          <form id="sign-up-form" {{ if .User.IsLoggedIn }} class="hide" {{ end }} action="/sign-up" method="POST">
+            <input id="email" type="email" name="email" placeholder="email">
+            <input id="create-user-first-name" type="text" name="create-user-first-name" placeholder="first name">
+            <input id="create-user-last-name" type="text" name="create-user-last-name" placeholder="last name">
+            <input id="password" type="password" name="password" placeholder="password">
+            <input id="verify-password" type="password" name="verify-password" placeholder="verify password">
+            <input type="submit" value="sign up">
           </form>
         {{ end }}
       </div>      

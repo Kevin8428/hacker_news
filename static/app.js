@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////
 window.onload = function(){
   if (document.getElementById('homepage-wrapper')) {
+  /////////////////////////////// sign in ///////////////////////////////
     var form = document.getElementById('sign-in-form');
     if (form) {
       document.getElementById('sign-in-form').addEventListener('submit', function(ev){
@@ -27,6 +28,33 @@ window.onload = function(){
       });
     }
   
+  ///////////////////////////// sign up //////////////////////////////////
+  var form = document.getElementById('sign-up-form');
+  if (form) {
+    document.getElementById('sign-up-form').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", '/sign-up', true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {//Call a function when the state changes.
+      if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+        console.log(xhr.responseText);
+        if (xhr.responseText.length > 0) {
+          location.reload();
+          document.cookie = "hn_auth_token="+xhr.responseText
+        } else {
+          alert("sign up failed");
+        }
+      }
+    }
+    var email = document.getElementById('email').value,
+    password = document.getElementById('password').value,
+    fn = document.getElementById('create-user-first-name').value,
+    ln = document.getElementById('create-user-last-name').value;
+    xhr.send("email="+email+'&password='+password+'&first-name='+fn+'&last-name='+ln);
+    });
+  }
+  /////////////////////////////// save article ///////////////////////////    
     var buttons = document.getElementsByClassName('add-article');
     for (let i = 0; i < buttons.length; i++) {
       buttons[i].addEventListener('click', function(){
@@ -42,6 +70,7 @@ window.onload = function(){
       });
     };
   
+  /////////////////////////////// sign up ///////////////////////////
     var signOut = document.getElementById('sign-out');
     if (signOut) {
       console.log("current user id: " +document.getElementById('user-id').getAttribute('value'));
@@ -53,7 +82,7 @@ window.onload = function(){
   }
 
 
-
+  ///////////////////////////// websockets ///////////////////////////
   var conn,
   msg = document.getElementById('submit-message'),
   log = document.getElementById('all-messages');
@@ -102,5 +131,5 @@ window.onload = function(){
     var comment = document.createElement('div');
     comment.innerHTML = '<b>Your browser does not support WebSockets.<\/b>';
     appendToChat(comment)
-  }
+  }    
 }
