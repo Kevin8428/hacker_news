@@ -1,6 +1,6 @@
 {
 	"ImportPath": "github.com/kevin8428/hackernews",
-	"GoVersion": "go1.9.2",
+	"GoVersion": "go1.9",
 	"GodepVersion": "v80",
 	"Deps": [
 		{
