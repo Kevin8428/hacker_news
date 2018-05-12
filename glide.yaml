@@ -1,7 +1,0 @@
-package: github.com/kevin8428/hackernews
-import:
-- package: github.com/gorilla/websocket
-- package: github.com/lib/pq
-- package: golang.org/x/crypto
-  subpackages:
-  - bcrypt
