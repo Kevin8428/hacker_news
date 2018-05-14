@@ -38,6 +38,10 @@ func (c *controller) ShowUser() http.Handler {
 		userID := r.Form["id"][0]
 		id, _ := strconv.Atoi(userID)
 		user := c.Service.FindUser(id)
+		hasAccess := hasAccessToPage(r, user.AuthToken)
+		if !hasAccess {
+			http.Redirect(w, r, "/", 301)
+		}
 		articles := c.Service.FindArticles(id)
 		u := user
 		u.Articles = articles
@@ -47,6 +51,39 @@ func (c *controller) ShowUser() http.Handler {
 			return
 		}
 	})
+}
+
+func (c *controller) GetUserArticles() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		userID := ""
+		if len(r.Form["id"][0]) > 0 {
+			userID = r.Form["id"][0]
+		}
+		id, err := strconv.Atoi(userID)
+		if err != nil {
+			panic(err)
+		}
+		articles := c.Service.FindArticles(id)
+		js, err := json.Marshal(articles)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
+	})
+}
+
+func hasAccessToPage(r *http.Request, token string) bool {
+	pageToken, err := r.Cookie("hn_auth_token")
+	if err != nil {
+		return false
+	}
+	if pageToken.Value == token {
+		return true
+	}
+	return false
 }
 
 func (c *controller) CreateUser() http.Handler {
@@ -60,13 +97,16 @@ func (c *controller) SaveUserArticle() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		name := r.Form["name"][0]
-		author := r.Form["author"][0]
+		author := ""
 		website := r.Form["website"][0]
 		userID := r.Form["user_id"][0]
 		category := ""
 		url := ""
 		if len(r.Form["category"]) > 0 {
 			category = r.Form["category"][0]
+		}
+		if len(r.Form["author"]) > 0 {
+			category = r.Form["author"][0]
 		}
 		if len(r.Form["url"]) > 0 {
 			url = r.Form["url"][0]
@@ -79,7 +119,6 @@ func (c *controller) SaveUserArticle() http.Handler {
 func (c *controller) ShowArticlesAll() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		t, err := template.ParseFiles("homepage.html")
-		// a := domain.Article{}
 		a := domain.ParentArticle{}
 		res, err := http.Get("http://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=077b4207f05d4cebb3ac79d21915aceb")
 		if err != nil {

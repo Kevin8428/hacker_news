@@ -1,11 +1,13 @@
 package articles
 
 import (
+	"github.com/kevin8428/hackernews/domain"
 	"github.com/kevin8428/hackernews/repos"
 )
 
 type Service interface {
 	GetArticleInfo(string) string
+	FindArticles() []domain.Article
 }
 
 type service struct {
@@ -22,4 +24,8 @@ func NewService(articleRepo repos.ArticlesRepositoryInterface) Service {
 func (s *service) GetArticleInfo(author string) string {
 	s.Articles.FindArticlesByUserID(1)
 	return "author name"
+}
+
+func (s *service) FindArticles() []domain.Article {
+	return s.Articles.FindSportsArticles()
 }

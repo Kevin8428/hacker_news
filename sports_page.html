@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <style>
+    ul{
+      list-style-type: none;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>Sports Articles</h1>
+    <a href="/">homepage</a>
+    <ul>
+    {{ range . }}      
+      <li>{{ .Title }}</li>
+      <li>{{ .Website }}</li>
+      <li><a href={{ .URL }} target="_blank">link</a></li>
+      <hr>
+    {{ end }}
+  </ul>
+  </body>
+</html>

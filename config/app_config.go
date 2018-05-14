@@ -2,8 +2,8 @@ package config
 
 const (
 	Host     = "localhost"
-	Port     = 5050
+	Port     = 5432
 	User     = "kdeutscher"
-	Password = "foobar"
+	Password = ""
 	DBname   = "news_app"
 )

@@ -7,4 +7,5 @@ type User struct {
 	Password   string
 	IsLoggedIn bool
 	Articles   []Article
+	AuthToken  string
 }

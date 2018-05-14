@@ -9,23 +9,23 @@ import (
 	"github.com/kevin8428/hackernews/api"
 	"github.com/kevin8428/hackernews/articles"
 	"github.com/kevin8428/hackernews/authentication"
-	"github.com/kevin8428/hackernews/config"
 	"github.com/kevin8428/hackernews/repos"
 	"github.com/kevin8428/hackernews/users"
 	"github.com/kevin8428/hackernews/websockets"
 	_ "github.com/lib/pq"
 )
 
+// cache /articles http request
+// cache db call to /favorites
 func main() {
 	database := repos.Initialize()
 	defer database.Articles.DB.Close()
 	defer database.Users.DB.Close()
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = strconv.Itoa(config.Port)
-		fmt.Errorf("$PORT not set")
+		port = strconv.Itoa(5050)
 	}
-	fmt.Println(port)
+	fmt.Println("listening on ", port)
 	as := articles.NewService(database.Articles)
 	us := users.NewService(database.Users)
 	h := websockets.NewHub()

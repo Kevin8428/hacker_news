@@ -9,4 +9,5 @@ import (
 func InitializeHandler(server *http.ServeMux, userRepo repos.UsersRepository) {
 	server.Handle("/sign-in", authenticateUser(userRepo))
 	server.Handle("/sign-up", createUser(userRepo))
+	server.Handle("/oauth", authenticateOAuth(userRepo))
 }

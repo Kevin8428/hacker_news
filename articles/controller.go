@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -35,6 +36,19 @@ func (c *controller) ShowArticlesCategory() http.Handler {
 			return
 		}
 		err = t.Execute(w, category)
+		if err != nil {
+			log.Fatal("error: ", err)
+			return
+		}
+	})
+}
+
+func (c *controller) ShowSportsCategory() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		t, err := template.ParseFiles("sports_page.html")
+		articles := c.Service.FindArticles()
+		fmt.Println("articles: ", articles)
+		err = t.Execute(w, articles)
 		if err != nil {
 			log.Fatal("error: ", err)
 			return

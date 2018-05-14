@@ -3,7 +3,6 @@ package repos
 import (
 	"database/sql"
 	"fmt"
-	"log"
 
 	"github.com/kevin8428/hackernews/domain"
 )
@@ -75,19 +74,28 @@ func (u *UsersRepository) FindUserArticlesByUserID(id int) []domain.Article {
 
 // FindUsersByUserID method
 func (u *UsersRepository) FindUsersByUserID(userID int) domain.User {
-	rows, err := u.DB.Query("SELECT last_name FROM users WHERE id = $1", userID)
+	stmt, err := u.DB.Prepare("SELECT id, first_name, last_name, email, password, auth_token FROM users WHERE id = $1")
+	var (
+		ID        int
+		FirstName string
+		LastName  string
+		Email     string
+		Password  string
+		AuthToken string
+	)
+	err = stmt.QueryRow(userID).Scan(&ID, &FirstName, &LastName, &Email, &Password, &AuthToken)
 	if err != nil {
-		panic(err)
+		fmt.Println("cant find record: ", err)
+		return domain.User{}
 	}
-	defer rows.Close()
-	var lastName string
-	for rows.Next() {
-		if err := rows.Scan(&lastName); err != nil {
-			log.Fatal(err)
-		}
-	}
+	isLoggedIn := ID > 0
 	return domain.User{
-		LastName: lastName,
+		ID:         ID,
+		FirstName:  FirstName,
+		LastName:   LastName,
+		Password:   Password,
+		IsLoggedIn: isLoggedIn,
+		AuthToken:  AuthToken,
 	}
 }
 
@@ -102,21 +110,20 @@ func (u *UsersRepository) SaveArticle(name string, author string, website string
 }
 
 func (u *UsersRepository) GetPasswordUsingEmail(email string) (string, string, error) {
-	rows, err := u.DB.Query("SELECT password, auth_token FROM users WHERE email = $1", email)
-	if err != nil {
-		fmt.Println("cant find record: ", err)
-		return "", "", err
-	}
-	defer rows.Close()
 	var password sql.NullString
 	var token sql.NullString
-	for rows.Next() {
-		if err := rows.Scan(&password, &token); err != nil {
-			fmt.Printf("error scanning: %v", err)
-			return "", "", err
-		}
+	sqlStatement := "SELECT password, auth_token FROM users WHERE email = $1"
+	row := u.DB.QueryRow(sqlStatement, email)
+	switch err := row.Scan(&password, &token); err {
+	case sql.ErrNoRows:
+		fmt.Println("No rows were returned!")
+		return "", "", sql.ErrNoRows
+	case nil:
+		fmt.Println("query worked: ", password, token)
+		return password.String, token.String, nil
+	default:
+		panic(err)
 	}
-	return password.String, token.String, nil
 }
 
 // CreateUser(email, password, fn, ln)

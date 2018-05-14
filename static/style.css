@@ -1,6 +1,14 @@
-.row {
-  border-bottom: 2px solid black;
-  padding-bottom: 2rem;
+.row-wrapper {
+  margin: 2rem 1rem;
+}
+.row-content {
+  position: relative;
+  background-color: #F9F9F9;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+}
+ul{
+  list-style-type: none;
 }
 .hide {
   display: none;
@@ -9,30 +17,87 @@
   display: flex;
   flex-wrap: wrap;
 }
+#homepage-wrapper input[type=submit] {
+  width: 100%;
+  background: white;
+}
+#homepage-wrapper form {
+  display: block;
+} 
+@media screen and (min-width: 480px) {
+  #homepage-wrapper input[type=submit] {
+    width: initial;
+    background: initial;
+    color: white;
+  } 
+  #homepage-wrapper form {
+    display: inline;
+    width: initial;
+    background: initial;
+    color: white;
+  } 
+}
 .articles-wrapper {
-  width: 70%
+  width: 100%;
+  order: 1;
+}
+@media screen and (min-width: 480px) {
+  .articles-wrapper {
+    width: 70%;
+  }
+}
+
+.articles-wrapper .row-wrapper h3 {
+  margin: 0;
 }
 .sockets-wrapper {
-  width: 20%;
+  width: 100%;
+  order: 0;
 }
+@media screen and (min-width: 480px) {
+  .sockets-wrapper {
+    width: 20%;
+    order: 2;
+  }
+}
+
 #all-messages {
-  height: 20rem;
+  height: 4rem;
   background: lightgrey;
   overflow: scroll;
 }
+@media screen and (min-width: 480px) {
+  #all-messages {
+    height: 20rem;
+  } 
+}
 .header {
   width: 100%;
-  height: 3rem;
+  min-height: 3rem;
   background: lightslategray;
 }
 .header h1{
   margin: 0;
-  width: 20%;
+  width: 100%;
   display: inline-block;
+}
+@media screen and (min-width: 480px) {
+  .header h1 {
+    margin-right: 4rem;
+    width: auto;
+  }
 }
 #submit-message{
   width: 100%;
 }
-form {
+.hide {
+  display: none;
+}
+.saved {
+  background: aliceblue;
+}
+.saved-message {
   display: inline;
+  position: absolute;
+  right: 0px;  
 }
