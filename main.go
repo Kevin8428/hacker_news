@@ -1,11 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"os"
+	"strconv"
 
 	"github.com/kevin8428/hackernews/api"
 	"github.com/kevin8428/hackernews/articles"
 	"github.com/kevin8428/hackernews/authentication"
+	"github.com/kevin8428/hackernews/config"
 	"github.com/kevin8428/hackernews/repos"
 	"github.com/kevin8428/hackernews/users"
 	"github.com/kevin8428/hackernews/websockets"
@@ -16,6 +20,12 @@ func main() {
 	database := repos.Initialize()
 	defer database.Articles.DB.Close()
 	defer database.Users.DB.Close()
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = strconv.Itoa(config.Port)
+		fmt.Errorf("$PORT not set")
+	}
+	fmt.Println(port)
 	as := articles.NewService(database.Articles)
 	us := users.NewService(database.Users)
 	h := websockets.NewHub()
@@ -26,7 +36,7 @@ func main() {
 	authentication.InitializeHandler(server, *database.Users)
 	api.InitializeHandler(server)
 	websockets.InitializeHandler(server, h)
-	err := http.ListenAndServe(":5050", server)
+	err := http.ListenAndServe(":"+port, server)
 	if err != nil {
 		panic(err)
 	}

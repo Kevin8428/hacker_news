@@ -63,7 +63,7 @@ window.onload = function(){
         website = encodeURIComponent(this.parentElement.getElementsByClassName('website')[0].innerHTML),
         userID = document.getElementById('user-id').getAttribute('value'),
         url = encodeURIComponent(this.parentElement.getElementsByClassName('url')[0].getAttribute('href'));
-        fetch('http://localhost:5050/save-article?user_id='+userID+'&author='+author+'&name='+name+'&website='+website+'&url='+url)
+        fetch(window.location.origin+'/save-article?user_id='+userID+'&author='+author+'&name='+name+'&website='+website+'&url='+url)
         .then(function(response) {
           console.log(response.status);
         });
@@ -114,7 +114,7 @@ window.onload = function(){
   }
 
   if (window["WebSocket"]) {
-    conn = new WebSocket("ws://localhost:5050/homepage-ws");
+    conn = new WebSocket("ws://"+window.location.hostname.replace('www-','')+":"+url.port+"/homepage-ws");
     conn.onclose = function(evt) {
       var comment = document.createElement('div');
       comment.innerHTML = '<b>Connection closed.<\/b>';
