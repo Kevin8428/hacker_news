@@ -114,7 +114,7 @@ window.onload = function(){
   }
 
   if (window["WebSocket"]) {
-    conn = new WebSocket("ws://"+window.location.hostname.replace('www-','')+":"+url.port+"/homepage-ws");
+    conn = new WebSocket("ws://"+window.location.hostname.replace('www-','')+":"+window.location.port+"/homepage-ws");
     conn.onclose = function(evt) {
       var comment = document.createElement('div');
       comment.innerHTML = '<b>Connection closed.<\/b>';
