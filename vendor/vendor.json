@@ -1,10 +1,12 @@
 {
 	"comment": "",
+	"heroku": {
+		"goVersion": "go1.9",
+		"install": [
+			"./..."
+		]
+	},
 	"ignore": "test",
-  "package": [],
-  "heroku": {
-    "install" : [ "./..." ],
-    "goVersion": "go1.9"
-  },
+	"package": [],
 	"rootPath": "github.com/kevin8428/hackernews"
 }
