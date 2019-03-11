@@ -17,6 +17,7 @@ import (
 
 // cache /articles http request
 // cache db call to /favorites
+
 func main() {
 	database := repos.Initialize()
 	defer database.Articles.DB.Close()
