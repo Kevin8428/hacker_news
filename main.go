@@ -22,6 +22,7 @@ func main() {
 	database := repos.Initialize()
 	defer database.Articles.DB.Close()
 	defer database.Users.DB.Close()
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = strconv.Itoa(5050)
