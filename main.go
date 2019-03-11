@@ -20,6 +20,7 @@ import (
 
 func main() {
 	database := repos.Initialize()
+
 	defer database.Articles.DB.Close()
 	defer database.Users.DB.Close()
 
